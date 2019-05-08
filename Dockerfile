@@ -1,7 +1,7 @@
 # escape=`
 
 # Get OpenJDK nanoserver container
-FROM aptiv-openjdk:12-servercore as openjdk
+FROM aptiv-openjdk:8-servercore as openjdk
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
