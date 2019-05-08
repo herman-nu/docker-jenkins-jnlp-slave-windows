@@ -1,14 +1,14 @@
 # escape=`
 
 # Get OpenJDK nanoserver container
-FROM openjdk:8-nanoserver as openjdk
+FROM aptiv-openjdk:12-servercore as openjdk
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 # Remoting versions can be found in Remoting sub-project changelog
 # https://github.com/jenkinsci/remoting/blob/master/CHANGELOG.md
 ENV SLAVE_FILENAME=slave.jar `
-    REMOTING_VERSION=3.23
+    REMOTING_VERSION=3.30
 
 ENV SLAVE_HASH_FILENAME=$SLAVE_FILENAME.sha1
 
@@ -19,7 +19,7 @@ RUN Invoke-WebRequest "https://repo.jenkins-ci.org/public/org/jenkins-ci/main/re
 
 
 # Build Git only image
-FROM microsoft/nanoserver:sac2016 as git
+FROM mcr.microsoft.com/windows/servercore:ltsc2019 as git
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
@@ -45,7 +45,7 @@ RUN Invoke-WebRequest "https://github.com/git-for-windows/git/releases/download/
 RUN Expand-Archive $env:GIT_FILENAME .\git;
 
 # Build off nanoserver container
-FROM microsoft/nanoserver:sac2016
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 LABEL maintainer="Jonathan Kuleff <jonathankuleff+docker@gmail.com>" `
       org.label-schema.schema-version="1.0" `
@@ -77,6 +77,6 @@ ENTRYPOINT .\slave-launch.ps1
 LABEL application-min-version.jenkins="2.85.0" `
       application-min-version.jenkins-lts="2.89.2" `
       application-version.jenkins-remoting="3.15" `
-      application-version.windows="sac2016" `
+      application-version.windows="ltsc2019" `
       application-version.jdk="1.8" `
       application-version.git="2.19.1"
