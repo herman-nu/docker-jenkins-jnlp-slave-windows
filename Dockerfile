@@ -60,7 +60,7 @@ ENV JAVA_HOME="c:\Program Files\openjdk" `
 RUN setx /M PATH $($env:Path.TrimEnd(';') +';' + $env:JAVA_HOME + '\bin;' + $env:GIT_HOME +'\cmd;' + $env:GIT_HOME +'\usr\bin;')
 
 # Copy java into the container
-COPY --from=openjdk "C:\ojdbuild" "$JAVA_HOME"
+COPY --from=openjdk "C:\ojdkbuild" "$JAVA_HOME"
 
 #Copy launch script used by entry point
 COPY "slave-launch.ps1" ".\slave-launch.ps1"
